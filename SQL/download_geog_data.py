@@ -53,13 +53,13 @@ def download_geod_data():
 
 @app.route('/')
 def home():
-    return jsonify({"message": "Welcome to the File Download Service. Use /download to start the download."})
+    return jsonify({"message": "Welcome to the File Download GEOG Service. Use /GEOG to start the download."})
 
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
 
-@app.route('/download', methods=['GET'])
+@app.route('/GEOG', methods=['GET'])
 def download():
     # 비동기로 download_geod_data 함수를 실행
     future = executor.submit(download_geod_data)
