@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_6161a627b99eb6006b8736a4b79f8964 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+<script>
+    // 데이터 로드 및 파싱
+    var timeFrames = [{"day": 1, "hour": 0, "data": [{"latitude": 36.03278350830078, "longitude": 129.02481079101562, "temperature": 2.976593017578125, "u": 11.304193496704102, "v": -3.589273452758789}]}, {"day": 1, "hour": 0, "data": [{"latitude": 36.032108306884766, "longitude": 129.36572265625, "temperature": 4.838134765625, "u": 11.177146911621094, "v": -4.222603797912598}]}, {"day": 1, "hour": 0, "data": [{"latitude": 36.308563232421875, "longitude": 129.02490234375, "temperature": 1.503936767578125, "u": 11.53061580657959, "v": -3.3908019065856934}]}, {"day": 1, "hour": 0, "data": [{"latitude": 36.30788803100586, "longitude": 129.36724853515625, "temperature": 3.649383544921875, "u": 11.401878356933594, "v": -4.0592732429504395}]}, {"day": 1, "hour": 1, "data": [{"latitude": 36.03278350830078, "longitude": 129.02481079101562, "temperature": 4.45184326171875, "u": 11.414090156555176, "v": -3.099952459335327}]}, {"day": 1, "hour": 1, "data": [{"latitude": 36.032108306884766, "longitude": 129.36572265625, "temperature": 5.801788330078125, "u": 11.254809379577637, "v": -3.740330696105957}]}, {"day": 1, "hour": 1, "data": [{"latitude": 36.308563232421875, "longitude": 129.02490234375, "temperature": 3.678680419921875, "u": 11.642547607421875, "v": -2.832122325897217}]}, {"day": 1, "hour": 1, "data": [{"latitude": 36.30788803100586, "longitude": 129.36724853515625, "temperature": 5.326568603515625, "u": 11.513662338256836, "v": -3.5546650886535645}]}, {"day": 1, "hour": 2, "data": [{"latitude": 36.03278350830078, "longitude": 129.02481079101562, "temperature": 5.262115478515625, "u": 11.739242553710938, "v": -1.8495135307312012}]}, {"day": 1, "hour": 2, "data": [{"latitude": 36.032108306884766, "longitude": 129.36572265625, "temperature": 6.52880859375, "u": 11.467113494873047, "v": -2.519637107849121}]}, {"day": 1, "hour": 2, "data": [{"latitude": 36.308563232421875, "longitude": 129.02490234375, "temperature": 4.608184814453125, "u": 11.999847412109375, "v": -1.567918062210083}]}, {"day": 1, "hour": 2, "data": [{"latitude": 36.30788803100586, "longitude": 129.36724853515625, "temperature": 5.999481201171875, "u": 11.751242637634277, "v": -2.3073325157165527}]}, {"day": 1, "hour": 3, "data": [{"latitude": 36.03278350830078, "longitude": 129.02481079101562, "temperature": 5.872894287109375, "u": 12.006109237670898, "v": -0.7878694534301758}]}, {"day": 1, "hour": 3, "data": [{"latitude": 36.032108306884766, "longitude": 129.36572265625, "temperature": 7.06036376953125, "u": 11.817239761352539, "v": -1.5588401556015015}]}, {"day": 1, "hour": 3, "data": [{"latitude": 36.308563232421875, "longitude": 129.02490234375, "temperature": 5.29510498046875, "u": 12.293763160705566, "v": -0.5272117853164673}]}, {"day": 1, "hour": 3, "data": [{"latitude": 36.30788803100586, "longitude": 129.36724853515625, "temperature": 6.53875732421875, "u": 12.103962898254395, "v": -1.356398582458496}]}, {"day": 1, "hour": 4, "data": [{"latitude": 36.03278350830078, "longitude": 129.02481079101562, "temperature": 6.36639404296875, "u": 12.547819137573242, "v": 0.08720722049474716}]}, {"day": 1, "hour": 4, "data": [{"latitude": 36.032108306884766, "longitude": 129.36572265625, "temperature": 7.408447265625, "u": 12.308175086975098, "v": -0.6188545227050781}]}, {"day": 1, "hour": 4, "data": [{"latitude": 36.308563232421875, "longitude": 129.02490234375, "temperature": 5.80865478515625, "u": 12.943689346313477, "v": 0.3272259831428528}]}, {"day": 1, "hour": 4, "data": [{"latitude": 36.30788803100586, "longitude": 129.36724853515625, "temperature": 6.88555908203125, "u": 12.678999900817871, "v": -0.3922533392906189}]}];
+    var currentFrame = 0;
+    var markers = [];
+    
+    function updateMap() {
+        // 이전 마커 제거
+        markers.forEach(function(marker) {
+            map.removeLayer(marker);
+        });
+        markers = [];
+        
+        var frame = timeFrames[currentFrame];
+        
+        // 프레임 데이터 확인
+        console.log('Current frame:', frame);
+        
+        frame.data.forEach(function(point) {
+            // 온도 마커
+            var tempColor = getTemperatureColor(point.temperature);
+            
+            var tempMarker = L.circleMarker([point.latitude, point.longitude], {
+                radius: 5,
+                fillColor: tempColor,
+                color: '#000',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            tempMarker.bindTooltip(point.temperature.toFixed(1) + '°C', {
+                permanent: true,
+                direction: 'top'
+            });
+            
+            markers.push(tempMarker);
+            
+            // 바람 화살표
+            var windLength = Math.sqrt(point.u * point.u + point.v * point.v);
+            if (windLength > 0) {
+                var scaleFactor = 0.01;
+                var endLat = point.latitude + (point.v * scaleFactor);
+                var endLon = point.longitude + (point.u * scaleFactor);
+                
+                var arrow = L.polyline(
+                    [[point.latitude, point.longitude], [endLat, endLon]],
+                    {color: 'green', weight: 2}
+                ).addTo(map);
+                
+                markers.push(arrow);
+            }
+        });
+        
+        // 시간 표시 업데이트
+        document.getElementById('time-display').innerHTML = 
+            `Day: ${frame.day}, Hour: ${frame.hour}:00`;
+            
+        currentFrame = (currentFrame + 1) % timeFrames.length;
+    }
+    
+    function getTemperatureColor(temp) {
+        if (temp > 20) return '#ff0000';
+        if (temp > 10) return '#ff8c00';
+        if (temp > 0) return '#ffff00';
+        return '#0000ff';
+    }
+    
+    // 시간 표시 div 추가
+    var timeDisplay = document.createElement('div');
+    timeDisplay.id = 'time-display';
+    timeDisplay.style.cssText = 'position: absolute; top: 10px; right: 10px; background: white; padding: 5px; border: 1px solid black; z-index: 1000;';
+    document.querySelector('.folium-map').appendChild(timeDisplay);
+    
+    // 애니메이션 시작 전 초기 데이터 확인
+    console.log('Total frames:', timeFrames.length);
+    console.log('First frame:', timeFrames[0]);
+    
+    // 애니메이션 시작
+    setInterval(updateMap, 1000);
+</script>
+    
+            <div class="folium-map" id="map_6161a627b99eb6006b8736a4b79f8964" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_6161a627b99eb6006b8736a4b79f8964 = L.map(
+                "map_6161a627b99eb6006b8736a4b79f8964",
+                {
+                    center: [35.82, 129.25],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 10,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_9eaae40d525517b537132e4caaef7317 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_9eaae40d525517b537132e4caaef7317.addTo(map_6161a627b99eb6006b8736a4b79f8964);
+        
+</script>
+</html>

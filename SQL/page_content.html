@@ -1,0 +1,1085 @@
+<head>
+ <title>
+  ARW Online Tutorial
+ </title>
+ <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+ <meta content="meteorology, mesoscale, microscale, weather modeling, forecasting weather, weather prediction, predictability, cloud systems, boundary layers, surface-atmosphere interactions, convective cloud systems, atmospheric chemistry, precipitating weather systems, wildfire research, National Center for Atmospheric Research" name="KEYWORDS"/>
+ <meta content="WRF Mesoscale Model Users OnLineTutorial" name="DESCRIPTION"/>
+ <meta content="INDEX,FOLLOW" name="ROBOTS"/>
+ <meta content="document" name="resource-type"/>
+ <meta content="0" http-equiv="expires"/>
+ <meta content="Copyright (c) 2004 by UCAR" name="copyright"/>
+ <meta content="1 days" name="revisit-after"/>
+ <meta content="Global" name="distribution"/>
+ <meta content="General" name="rating"/>
+ <script language="JavaScript" src="scripts/mmenu.js" type="text/javascript">
+ </script>
+ <script language="JavaScript" src="scripts/popups.js" type="text/javascript">
+ </script>
+ <script language="JavaScript">
+ </script>
+ <!--Include the style sheet with the background and fonts, etc.-->
+ <!--<link href="images/tutorialstyle.css" rel="stylesheet" type="text/css">-->
+ <link href="/wrf/OnLineTutorial/images/tutorialstyle.css" rel="stylesheet" type="text/css"/>
+ <link href="/wrf/OnLineTutorial/images/tutstyle.css" rel="stylesheet" type="text/css"/>
+</head>
+<!--Include the menu bar at the top of each page-->
+<html>
+ <head>
+  <style>
+   nav
+{
+width: 1500px;
+margin: auto;
+}
+	
+fixed_bar
+{
+width:100%;
+margin: auto;
+}
+  </style>
+  <!--<SCRIPT language=JavaScript src="scripts/menu_array_tutorial.js" type=text/javascript></SCRIPT>-->
+  <script language="JavaScript" src="scripts/mmenu.js" type="text/javascript">
+  </script>
+  <script language="JavaScript" src="scripts/popups.js" type="text/javascript">
+  </script>
+  <script language="JavaScript">
+   //  #########  popup text 
+descarray = new Array(
+"Example of mouse-overs used in these pages. If they stop working, try refreshing the page."
+);
+  </script>
+  <script language="JavaScript" src="scripts/hover.js" type="text/javascript">
+  </script>
+ </head>
+ <br/>
+ <br/>
+ <br/>
+ <br/>
+ <br/>
+ <br/>
+ <br/>
+ <blockquote>
+  <blockquote>
+   <br/>
+   <blockquote>
+    <blockquote>
+     <blockquote>
+      <fixed_bar>
+       <nav>
+        <ul>
+         <!-- Home Tab -->
+         <li>
+          <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/index.php">
+           Home
+          </a>
+          <ul>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/users/">
+             WRF Users' Home
+            </a>
+           </li>
+          </ul>
+         </li>
+         <!-- Introduction Tab -->
+         <li>
+          <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Introduction/index.php">
+           Introduction
+          </a>
+          <ul>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Introduction/start.php">
+             Getting Started
+            </a>
+           </li>
+          </ul>
+         </li>
+         <!-- Compilation Tab -->
+         <li>
+          <a href="#">
+           Compilation
+          </a>
+          <ul>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Compile/index.php">
+             WRF Code
+            </a>
+           </li>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Compile/wrf_compile2.php">
+             Configure WRF
+            </a>
+           </li>
+           <li>
+            <a href="#">
+             Compile WRF/WPS for Real Cases
+            </a>
+            <ul>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Compile/wrf_compile3.php">
+               Compile WRF
+              </a>
+              <li>
+               <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Compile/wps_compile1.php">
+                WPS Code
+               </a>
+               <li>
+                <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Compile/wps_compile2.php">
+                 Configure WPS
+                </a>
+               </li>
+               <li>
+                <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Compile/wps_compile3.php">
+                 Compile WPS
+                </a>
+               </li>
+              </li>
+             </li>
+            </ul>
+            <li>
+             <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Compile/ideal_compile.php">
+              Compile WRF for Idealized Cases
+             </a>
+            </li>
+           </li>
+          </ul>
+         </li>
+         <!-- Basics Tab -->
+         <li>
+          <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Basics/index.php">
+           Basics
+          </a>
+          <ul>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Basics/index.php">
+             Basics
+            </a>
+           </li>
+           <li>
+            <a href="#">
+             Geogrid
+            </a>
+            <ul>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Basics/geogrid.php">
+               Geogrid
+              </a>
+             </li>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Basics/GEOGRID/ter_data.php">
+               Terrestrial Input Data
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li>
+            <a href="#">
+             Ungrib
+            </a>
+            <ul>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Basics/ungrib.php">
+               Ungrib
+              </a>
+             </li>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Basics/IM_files/index.php">
+               Intermediate Files
+              </a>
+             </li>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Basics/ungrib_req_fields.php">
+               Required Fields
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Basics/index.php">
+             Metgrid
+            </a>
+           </li>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Basics/wrf.php">
+             WRF
+            </a>
+           </li>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/users/namelist_best_prac_wps.html">
+             namelist.wps
+            </a>
+           </li>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/users/namelist_best_prac_wrf.html">
+             namelist.input
+            </a>
+           </li>
+          </ul>
+         </li>
+         <!-- Case Studies Tab -->
+         <li>
+          <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/index.php">
+           Case Studies
+          </a>
+          <ul>
+           <!-- List of All Cases -->
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/index.php">
+             Cases
+            </a>
+           </li>
+           <!-- Single Domain Case - Katrina -->
+           <li>
+            <a href="#">
+             Single Domain Case
+            </a>
+            <ul>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SingleDomain/index.php">
+               Case
+              </a>
+             </li>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SingleDomain/ungrib.php">
+               Ungrib
+              </a>
+             </li>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SingleDomain/geogrid.php">
+               Geogrid
+              </a>
+             </li>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SingleDomain/metgrid.php">
+               Metgrid
+              </a>
+             </li>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SingleDomain/wrf.php">
+               WRF
+              </a>
+             </li>
+            </ul>
+           </li>
+           <!-- Restart Case -->
+           <li>
+            <a href="#">
+             Restart Run
+            </a>
+            <ul>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/Restart/index.php">
+               Case
+              </a>
+             </li>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/Restart/wrf.php">
+               WRF
+              </a>
+             </li>
+            </ul>
+           </li>
+           <!-- SST Input -->
+           <li>
+            <a href="#">
+             SST Input
+            </a>
+            <ul>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SST/index.php">
+               Overview
+              </a>
+             </li>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SST/metgrid.php">
+               Metgrid-Constant SST
+              </a>
+             </li>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SST/metgrid2.php">
+               Metgrid-Varying SST
+              </a>
+             </li>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SST/wrf.php">
+               WRF-Varying SST
+              </a>
+             </li>
+            </ul>
+           </li>
+           <!-- Nested Cases -->
+           <li>
+            <a href="#">
+             Nested Model Runs
+            </a>
+            <ul>
+             <!-- Overview of Nesting Cases -->
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/NestRuns/index.php">
+               Overview
+              </a>
+             </li>
+             <!-- 2-way Nesting Cases -->
+             <li>
+              <a href="#">
+               2-way Nesting
+              </a>
+              <ul>
+               <!-- 2-way with 1 Input Case -->
+               <li>
+                <a href="#">
+                 2-way with 1 Input File
+                </a>
+                <ul>
+                 <li>
+                  <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/NestRuns/2way1input.php">
+                   Overview
+                  </a>
+                 </li>
+                 <li>
+                  <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/NestRuns/wrf_2way1input.php">
+                   WRF
+                  </a>
+                 </li>
+                </ul>
+               </li>
+               <!-- 2-way with 2 Inputs Case -->
+               <li>
+                <a href="#">
+                 2-way with 2 Input Files
+                </a>
+                <ul>
+                 <li>
+                  <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/NestRuns/2way2inputs.php">
+                   Overview
+                  </a>
+                 </li>
+                 <li>
+                  <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/NestRuns/geogrid_2way2inputs.php">
+                   Geogrid
+                  </a>
+                 </li>
+                 <li>
+                  <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/NestRuns/metgrid_2way2inputs.php">
+                   Metgrid
+                  </a>
+                 </li>
+                 <li>
+                  <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/NestRuns/wrf_2way2inputs.php">
+                   WRF-Using All Input
+                  </a>
+                 </li>
+                 <li>
+                  <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/NestRuns/wrf_2way2inputs.php">
+                   WRF-Using Only Static Input
+                  </a>
+                 </li>
+                </ul>
+               </li>
+              </ul>
+             </li>
+             <!-- Ndown Case -->
+             <li>
+              <a href="#">
+               1-way Using Ndown
+              </a>
+              <ul>
+               <li>
+                <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/NestRuns/ndown.php">
+                 Overview
+                </a>
+               </li>
+               <li>
+                <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/NestRuns/ndown1-2.php">
+                 Geogrid
+                </a>
+               </li>
+               <li>
+                <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/NestRuns/ndown1-3.php">
+                 Metgrid
+                </a>
+               </li>
+               <li>
+                <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/NestRuns/ndown2.php">
+                 Real
+                </a>
+               </li>
+               <li>
+                <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/NestRuns/ndown4.php">
+                 Ndown and WRF
+                </a>
+               </li>
+              </ul>
+             </li>
+            </ul>
+           </li>
+           <!-- Analysis Nudging -->
+           <li>
+            <a href="#">
+             Analysis Nudging
+            </a>
+            <ul>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/FDDA/index.php">
+               Overview
+              </a>
+             </li>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/FDDA/wrf.php">
+               WRF
+              </a>
+             </li>
+            </ul>
+           </li>
+           <!-- Idealized Cases -->
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/Ideal/index.php">
+             Idealized Cases
+            </a>
+           </li>
+          </ul>
+         </li>
+         <!-- Graphics Tab -->
+         <li>
+          <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/index.php">
+           Graphics
+          </a>
+          <ul>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/index.php">
+             Overview
+            </a>
+           </li>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/NCL/index.php">
+             NCL
+            </a>
+            <ul>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/NCL/index.php">
+               Overview
+              </a>
+              <li>
+               <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/NCL/NCL_basics.php">
+                Basics
+               </a>
+               <li>
+                <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/NCL/NCL_scripts.php">
+                 Creating Scripts
+                </a>
+                <li>
+                 <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/NCL/NCL_examples.php">
+                  Sample Scripts
+                 </a>
+                 <li>
+                  <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/NCL/NCL_functions.php">
+                   NCL WRF Functions
+                  </a>
+                  <li>
+                   <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/NCL/NCL_Fortran.php">
+                    Fortran in NCL
+                   </a>
+                  </li>
+                 </li>
+                </li>
+               </li>
+              </li>
+             </li>
+            </ul>
+           </li>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/RIP4/index.php">
+             RIP
+            </a>
+            <ul>
+             <li>
+              <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/RIP4/index.php">
+               Overview
+              </a>
+              <li>
+               <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/RIP4/start.php">
+                Code
+               </a>
+               <li>
+                <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/RIP4/env.php">
+                 Environment
+                </a>
+                <li>
+                 <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/RIP4/compile.php">
+                  Compile
+                 </a>
+                 <li>
+                  <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/RIP4/ripdp.php">
+                   ripdp
+                  </a>
+                  <li>
+                   <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/RIP4/namelist.php">
+                    RIP Namelist
+                   </a>
+                   <li>
+                    <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/RIP4/rip.php">
+                     rip
+                    </a>
+                    <li>
+                     <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/RIP4/Examples/index.php">
+                      Examples
+                     </a>
+                    </li>
+                   </li>
+                  </li>
+                 </li>
+                </li>
+               </li>
+              </li>
+             </li>
+            </ul>
+            <li>
+             <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/ARWpost/index.php">
+              ARWpost
+             </a>
+             <ul>
+              <li>
+               <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/ARWpost/index.php">
+                Overview
+               </a>
+               <li>
+                <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/ARWpost/start.php">
+                 Code
+                </a>
+                <li>
+                 <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/ARWpost/env.php">
+                  Environment
+                 </a>
+                 <li>
+                  <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/ARWpost/compile.php">
+                   Compile
+                  </a>
+                  <li>
+                   <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/ARWpost/arwpost.php">
+                    Run ARWpost
+                   </a>
+                   <li>
+                    <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Graphics/ARWpost/Examples/index.php">
+                     Examples
+                    </a>
+                   </li>
+                  </li>
+                 </li>
+                </li>
+               </li>
+              </li>
+             </ul>
+            </li>
+           </li>
+          </ul>
+         </li>
+         <!-- Tools Tab -->
+         <li>
+          <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Tools/index.php">
+           Tools
+          </a>
+          <ul>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Tools/index.php">
+             Overview
+            </a>
+           </li>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Tools/read_wrf_nc.php">
+             read_wrf.nc
+            </a>
+           </li>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Tools/iowrf.php">
+             iowrf
+            </a>
+           </li>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Tools/p_interp.php">
+             p_interp
+            </a>
+           </li>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/users/utilities/diffwrf.htm">
+             diffwrf
+            </a>
+           </li>
+           <li>
+            <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/Tools/data_file_tools.php">
+             Data &amp; Graphics
+            </a>
+           </li>
+          </ul>
+         </li>
+         <!-- Data Tab -->
+         <li>
+          <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/DATA/index.php">
+           Data
+          </a>
+         </li>
+        </ul>
+       </nav>
+      </fixed_bar>
+     </blockquote>
+    </blockquote>
+   </blockquote>
+  </blockquote>
+ </blockquote>
+</html>
+<body>
+ <blockquote>
+  <blockquote>
+   <blockquote>
+    <h1>
+     Single Domain Case - Ungrib
+    </h1>
+    <h2>
+     Unpack input GRIB data (ungrib.exe)
+    </h2>
+    <p class="bodyfont">
+     We plan on using this case study for a number of different model runs, including examples of adding SST data to a model run. So let's unpack the data first before we get started.
+    </p>
+    <p class="bodyfont">
+     1. If you have not already created a directory in which to place your input data, do so now.  For organizational purposes, create this directory at the same level as your WPS/ and WRF/ directories.
+     <blockquote class="unixfont">
+      mkdir DATA
+     </blockquote>
+     <p class="bodyfont">
+      2.
+      <strong>
+       Download
+      </strong>
+      the
+      <a href="../../../TUTORIAL_DATA/matthew_1deg.tar.gz">
+       Matthew case study data
+      </a>
+      and place in the
+      <strong>
+       <em>
+        DATA/
+       </em>
+      </strong>
+      directory.  When you unpack the tar file, you will get a directory called
+      <strong>
+       <em>
+        matthew/
+       </em>
+      </strong>
+      :
+     </p>
+     <blockquote>
+      <p class="unixfont">
+       tar -xf matthew_1deg.tar.gz
+      </p>
+      <p class="bodyfont">
+       GFS (
+       <a href="https://rda.ucar.edu/datasets/ds083.2/">
+        Global Forecast System
+       </a>
+       ) is a model product from
+       <a href="http://www.emc.ncep.noaa.gov/">
+        NCEP
+       </a>
+       .
+      </p>
+      <p class="bodyfont">
+       <strong>
+        Type
+       </strong>
+       :  GRIB2  data
+      </p>
+      <p class="bodyfont">
+       <strong>
+        Resolution
+       </strong>
+       :
+       <br/>
+       1deg global data
+       <br/>
+       Output frequency 6 hourly
+       <br/>
+       27  pressure levels (1000-10hPa ; excluding surface)
+      </p>
+      <p class="bodyfont">
+       <em>
+        The data are available for the period 2016-10-06_00 to 2016-10-08_00 (data frequency is 6 hourly).
+       </em>
+       <br/>
+      </p>
+     </blockquote>
+     <p class="bodyfont">
+      3. Let's get
+      <a href="../../Basics/UNGRIB/data_fam.php">
+       familiar
+      </a>
+      with the data by running
+      <strong>
+       g2print
+      </strong>
+      on one of the data files:
+     </p>
+     <p class="unixfont">
+      ./util/g2print.exe ../DATA/matthew/fnl_20161006_00_00.grib2 &gt;&amp;
+      <a href="g2print.log">
+       g2print.log
+      </a>
+      <br/>
+     </p>
+     <blockquote>
+     </blockquote>
+     <p class="bodyfont">
+      4. Link-in the GFS Vtable:
+     </p>
+     <p class="unixfont">
+      ln -sf ungrib/Variable_Tables/
+      <strong>
+       Vtable.GFS
+      </strong>
+      Vtable
+     </p>
+     <blockquote>
+      <p class="bodyfont">
+       <em>
+        Peruse the ungib/Variable_Tables/Vtable.GFS  file to see which fields we are going to try and unpack from the GRIB files.
+        <br/>
+       </em>
+      </p>
+     </blockquote>
+     <p class="bodyfont">
+      5. Link in the GRIB data by making use of the script
+      <strong>
+       <em>
+        <a href="../../Basics/UNGRIB/data_link.php">
+         link_grib.csh
+        </a>
+       </em>
+      </strong>
+     </p>
+     <p class="unixfont">
+      ./link_grib.csh ../DATA/matthew/fnl
+     </p>
+     <p class="bodyfont">
+      This will create the following links:
+     </p>
+     <p class="unixfont">
+      GRIBFILE.AAA -&gt; ../DATA/matthew/fnl_20161006_00_00.grib2
+      <br/>
+      GRIBFILE.AAB -&gt; ../DATA/matthew/fnl_20161006_06_00.grib2
+      <br/>
+      GRIBFILE.AAC -&gt; ../DATA/matthew/fnl_20161006_12_00.grib2
+      <br/>
+      GRIBFILE.AAD -&gt; ../DATA/matthew/fnl_20161006_18_00.grib2
+      <br/>
+      GRIBFILE.AAE -&gt; ../DATA/matthew/fnl_20161007_00_00.grib2
+      <br/>
+      GRIBFILE.AAF -&gt; ../DATA/matthew/fnl_20161007_06_00.grib2
+      <br/>
+      GRIBFILE.AAG -&gt; ../DATA/matthew/fnl_20161007_12_00.grib2
+      <br/>
+      GRIBFILE.AAH -&gt; ../DATA/matthew/fnl_20161007_18_00.grib2
+      <br/>
+      GRIBFILE.AAI -&gt; ../DATA/matthew/fnl_20161008_00_00.grib2
+      <br/>
+     </p>
+     <p class="bodyfont">
+      6.
+      <strong>
+       Edit
+      </strong>
+      <em>
+       namelist.wps
+      </em>
+      , and set the following:
+      <br/>
+      <strong>
+       Note
+      </strong>
+      :
+      <em>
+       For detailed explanations of these variables, as well as suggestions for best practices, see the
+       <a href="http://www2.mmm.ucar.edu/wrf/users/namelist_best_prac_wps.html">
+        Best Practices WPS Namelist
+       </a>
+       page, or
+       <strong>
+        Chapter 3
+       </strong>
+       of the
+       <a href="http://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/contents.html">
+        WRF User's Guide
+       </a>
+      </em>
+      .
+     </p>
+     <p class="unixfont">
+      max_dom = 1
+      <br/>
+      start_date = '2016-10-06_00:00:00',
+      <br/>
+      end_date = '2016-10-08_00:00:00',
+      <br/>
+      interval_seconds = 21600,
+      <br/>
+      prefix = 'FILE',
+      <br/>
+     </p>
+     <p class="bodyfont">
+      7.
+      <strong>
+       Run
+      </strong>
+      ungrib to create the
+      <a href="../../Basics/IM_files/index.php">
+       intermediate
+      </a>
+      files:
+     </p>
+     <p class="unixfont">
+      ./ungrib.exe
+     </p>
+     <p class="bodyfont">
+      This will create the following files:
+     </p>
+     <p class="unixfont">
+      FILE:2016-10-06_00
+      <br/>
+      FILE:2016-10-06_06
+      <br/>
+      FILE:2016-10-06_12
+      <br/>
+      FILE:2016-10-06_18
+      <br/>
+      FILE:2016-10-07_00
+      <br/>
+      FILE:2016-10-07_06
+      <br/>
+      FILE:2016-10-07_12
+      <br/>
+      FILE:2016-10-07_18
+      <br/>
+      FILE:2016-10-08_00
+     </p>
+     <blockquote>
+      <p class="bodyfont">
+       <strong>
+        The log file (
+        <a href="ungrib.log">
+         ungrib.log
+        </a>
+        ) created during this step is very important.
+       </strong>
+       It contains information regarding the fields that were found in the input file and on which levels these fields are available.
+       <br/>
+       Peruse this log to make sure all the fields in the Vtable were found. Additionally it can be used for troubleshooting in case the ungrib process is not completed successfully.
+       <br/>
+      </p>
+     </blockquote>
+     <p class="bodyfont">
+      8.
+      <strong>
+       <a href="../../Basics/UNGRIB/data_fam_IM.php">
+        Familiarize
+       </a>
+      </strong>
+      yourself with the intermediate files:
+     </p>
+     <p class="unixfont">
+      ./util/
+      <a href="rd_int.log">
+       rd_intermediate.exe
+      </a>
+      FILE:2016-10-06_00
+      <br/>
+     </p>
+     <br/>
+     <br/>
+     <table border="3" bordercolor="#FBE713" width="100%">
+      <tr>
+       <td>
+        <img align="left" height="60" src="/wrf/OnLineTutorial/images/data.png" width="60"/>
+        <blockquote class="grayfont">
+         Below are the output intermediate files generated by this step.
+         <br/>
+         If you have problems generating these files, you can use this set to continue to the next step
+         <br/>
+         <a href="../../../TUTORIAL_DATA/single_domain/FILE.tar.gz">
+          Intermediate files
+         </a>
+        </blockquote>
+       </td>
+      </tr>
+     </table>
+    </p>
+    <br/>
+    <br/>
+    <table border="3" bordercolor="#FBE713" width="100%">
+     <tr>
+      <td>
+       <img align="left" height="60" src="/wrf/OnLineTutorial/images/tips_hints.png" width="60"/>
+       <blockquote class="grayfont">
+        Read more about the availability of
+        <a href="../../DATA/GFS/gfs.php">
+         other GFS data sets
+        </a>
+        .
+       </blockquote>
+      </td>
+     </tr>
+    </table>
+    <p>
+     <a name="SST">
+     </a>
+     <br/>
+    </p>
+   </blockquote>
+  </blockquote>
+  <h2>
+   While we are unpacking data, let's get some SST data too.
+  </h2>
+  <blockquote>
+   <p class="bodyfont">
+    <strong>
+     Note:
+    </strong>
+    <em>
+     We won't be using SST data for the single-domain case, but it will be used later if you are interested in running the sst-update case.  For now, just store this data so that you will have it later.  If you are not interested in running the sst-update case, then you can skip this section.
+    </em>
+   </p>
+   <p class="bodyfont">
+    1. Download the
+    <a href="../../../TUTORIAL_DATA/matthew_sst.tar.gz">
+     SST data
+    </a>
+    and place it in the directory
+    <strong>
+     <em>
+      ../DATA/
+     </em>
+    </strong>
+    .  Once you unpack the data, you should have a directory called
+    <em>
+     <strong>
+      matthew_sst/
+     </strong>
+    </em>
+    , which is where the individual SST data files will be:
+    <blockquote class="unixfont">
+     tar -xf matthew_sst.tar.gz
+    </blockquote>
+    <p class="unixfont">
+     2. ln -sf ungrib/Variable_Tables/
+     <strong>
+      Vtable.SST
+     </strong>
+     Vtable
+    </p>
+    <p class="unixfont">
+     3. ./link_grib.csh ../DATA/matthew_sst/rtg_sst_grb
+    </p>
+    <p class="bodyfont">
+     4.
+     <strong>
+      Edit
+     </strong>
+     <em>
+      namelist.wps
+     </em>
+     <blockquote class="unixfont">
+      start_date = '2016-10-06_00:00:00',
+      <br/>
+      end_date = '2016-10-08_00:00:00',
+      <br/>
+      interval_seconds =
+      <strong>
+       21600
+      </strong>
+      ,
+      <br/>
+      prefix = 'SST',
+     </blockquote>
+     <p class="unixfont">
+      5. ./ungrib.exe
+     </p>
+     <br/>
+     <br/>
+     <table border="3" bordercolor="#FBE713" width="100%">
+      <tr>
+       <td>
+        <img align="left" height="60" src="/wrf/OnLineTutorial/images/tips_hints.png" width="60"/>
+        <blockquote class="grayfont">
+         You may have noticed 
+                  that the SST data are only available once a day, but we set
+         <em>
+          interval_seconds
+         </em>
+         to 6 hourly. By doing this, ungrib will temporally interpolate 
+                  the available SST data to a frequency of 6 hourly.
+        </blockquote>
+       </td>
+      </tr>
+     </table>
+    </p>
+    <p>
+     Normally there is no advantage in temporally interpolating data at this stage, but as the SST data are only available every day, and we would like to use it with the Matthew data set, which is available every 6 hours, interpolating the SST data to the same frequency will ensure we can later use it with the Matthew data set.
+    </p>
+   </p>
+  </blockquote>
+  <br/>
+  <br/>
+  <table border="3" bordercolor="#FBE713" width="100%">
+   <tr>
+    <td>
+     <img align="left" height="60" src="/wrf/OnLineTutorial/images/data.png" width="60"/>
+     <blockquote class="grayfont">
+      Below are the output intermediate files generated by this step.
+      <br/>
+      If you have problems generating this data, you can use this set to continue to the next step.
+      <br/>
+      <a href="../../../TUTORIAL_DATA/SST.tar">
+       Intermediate files
+      </a>
+     </blockquote>
+    </td>
+   </tr>
+  </table>
+  <br/>
+  <br/>
+  <table border="3" bordercolor="#FBE713" width="100%">
+   <tr>
+    <td>
+     <img align="left" height="60" src="/wrf/OnLineTutorial/images/tips_hints.png" width="60"/>
+     <blockquote class="grayfont">
+      Read more about the availability of
+      <a href="../../DATA/SST/index.html">
+       other SST data sets
+      </a>
+      .
+     </blockquote>
+    </td>
+   </tr>
+  </table>
+  <br/>
+  <br/>
+  <p align="right" class="bodyfont">
+   <strong>
+    Set up the model domain
+   </strong>
+   <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SingleDomain/geogrid.php">
+    <img align="right" height="60" src="/wrf/OnLineTutorial/images/next_button.png" width="60"/>
+   </a>
+   <br/>
+   <br/>
+   <br/>
+   <br/>
+   <br/>
+   <p align="right" class="red">
+    <script language="JavaScript">
+     <!--
+                document.write("updated " + document.lastModified);
+                // -->
+    </script>
+   </p>
+  </p>
+ </blockquote>
+</body>
