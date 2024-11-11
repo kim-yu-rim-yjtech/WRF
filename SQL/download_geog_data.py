@@ -15,7 +15,7 @@ os.makedirs(STATIC_DIR, exist_ok=True)  # static 폴더가 없으면 생성
 executor = ThreadPoolExecutor(max_workers=2)
 
 def download_geod_data():
-    url = "https://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SingleDomain/ungrib.php"
+    url = "https://www2.mmm.ucar.edu/wrf/users/download/get_sources_wps_geog.html"
     response = requests.get(url)
     response.raise_for_status()
 
@@ -23,7 +23,7 @@ def download_geod_data():
     soup = BeautifulSoup(response.text, "html.parser")
 
     # 링크 추출
-    download_link = soup.select_one("body > blockquote > blockquote > blockquote > p:nth-child(4) > p > a")
+    download_link = soup.select_one('td[bgcolor="#FFFFFF"] a[href="../../src/wps_files/geog_high_res_mandatory.tar.gz"]')
     if download_link:
         relative_file_url = download_link["href"]
         file_url = urljoin(url, relative_file_url)
@@ -53,13 +53,13 @@ def download_geod_data():
 
 @app.route('/')
 def home():
-    return jsonify({"message": "Welcome to the File Download GEOG Service. Use /GEOG to start the download."})
+    return jsonify({"message": "Welcome to the File Download Service. Use /download to start the download."})
 
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
 
-@app.route('/GEOG', methods=['GET'])
+@app.route('/download', methods=['GET'])
 def download():
     # 비동기로 download_geod_data 함수를 실행
     future = executor.submit(download_geod_data)

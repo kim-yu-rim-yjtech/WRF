@@ -30,7 +30,7 @@ def get_db_connection():
         print("데이터베이스 연결에 실패했습니다:", e)
         return None
 
-def download_ncar_data()
+def download_ncar_data():
     # db에서 데이터 불러오기 => flask내 파일명이 존재하면 건너띄는 조건을 쿼리문에 추가 필요
     def select_data(output_dir): # output_dir을 flask로 수정이 필요?
         conn = get_db_connection()
