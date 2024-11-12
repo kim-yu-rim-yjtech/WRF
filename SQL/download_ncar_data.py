@@ -30,68 +30,78 @@ def get_db_connection():
         print("데이터베이스 연결에 실패했습니다:", e)
         return None
 
-def download_ncar_data():
-    # db에서 데이터 불러오기 => flask내 파일명이 존재하면 건너띄는 조건을 쿼리문에 추가 필요
-    def select_data(output_dir): # output_dir을 flask로 수정이 필요?
-        conn = get_db_connection()
-        if conn is None:
-            return None
-        
-        cursor = conn.cursor()
-        try:
-            query = """
-            SELECT *
-            FROM ncar_data"""
-            
-            cursor.execute(query)
-            #### 코드 추가 필요
-            # url = url_path
-            # file_reponse = requests.get(url, stream = True)
-            # file_response.raise_For_status()
-            # with open(save_path, 'wb') as f:
-                # for chunk if file_response.iter_content(chunk_size = 8192):
-                    # f.write(chunk)
-            # print(f'파일이 다운로드되었습니다: {save_path}')
-            # 파일 존재 여부 확인
-            # if os.path.exists(save_path):
-            #     print(f"파일이 static 디렉토리에 저장되었습니다: {save_path}")
-            # else:
-            #     print(f"파일 저장에 실패했습니다: {save_path}")
-            
-            # return file_name
-        # else:
-            # print("다운로드 링크를 찾을 수 없습니다.")
-            # return None
-            
-        except Exception as e:
-            print('데이터 로드에 실패했습니다.')
-        finally:
-            cursor.close()
-            conn.close()
+def download_grid2_data():
+    conn = get_db_connection()
+    
+    if conn is None:
+        return None
+    
+    cursor = conn.cursor()
+    downloaded_files = []
 
+    # 이미 다운로드된 파일 제외 조건
+    query = """
+    SELECT * 
+    FROM ncar_data
+    WHERE file_name NOT IN (SELECT file_name FROM downloaded_ncar_files)
+    """
+    cursor.execute(query)
+    data = cursor.fetchall()
+    
+    if data:
+        for row in data:
+            _, time, file_name, url_path = row
+            print("다운로드할 데이터:", row)
+            download_path = os.path.join(STATIC_DIR, file_name)
+            
+            url_path = url_path.strip()
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'}
+            
+            response = requests.get(url_path, headers=headers)
+            if response.status_code == 200:
+                with open(download_path, 'wb') as file:
+                    file.write(response.content)
+                
+                cursor.execute("INSERT INTO downloaded_ncar_files (file_name) VALUES (%s)", (file_name,))
+                conn.commit()
+                downloaded_files.append(file_name)
+                print(f"다운로드 완료: {file_name}")
+            else:
+                print("파일을 다운로드할 수 없습니다:", url_path, "상태 코드:", response.status_code)
+    else:
+        print("다운로드할 새로운 데이터가 없습니다.")
+    
+    cursor.close()
+    conn.close()
+    
+    return downloaded_files
 
 @app.route('/')
 def home():
     return jsonify({"message": "Welcome to the File Download NCAR Service. Use /NCAR to start the download."})
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
-
 @app.route('/NCAR', methods=['GET'])
 def download():
     # 비동기로 download_ncar_data 함수를 실행
-    future = executor.submit(download_ncar_data)
-    file_name = future.result()
+    future = executor.submit(download_grid2_data)
 
-    if file_name:
-        return jsonify({"status": "success", "file_url": f"/static/{file_name}"})
-    else:
-        return jsonify({"status": "error", "message": "파일을 다운로드할 수 없습니다."}), 404
+    # 비동기 실행 중 상태 메시지 반환
+    return jsonify({"status": "in_progress", "message": "파일 다운로드가 시작되었습니다. 다운로드가 완료되면 파일을 static 디렉토리에서 확인할 수 있습니다."})
+
 
 @app.route('/static/<path:filename>')
 def serve_file(filename):
     return send_from_directory(STATIC_DIR, filename)
 
+
+@app.route('/downloaded_files', methods=['GET'])
+def list_downloaded_files():
+    # 다운로드된 파일 목록을 확인하는 엔드포인트
+    files = os.listdir(STATIC_DIR)
+    file_urls = [f"/static/{filename}" for filename in files]
+    return jsonify({"status": "success", "files": file_urls})
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5555, debug=True)

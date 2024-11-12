@@ -9,6 +9,7 @@ import geopandas as gpd
 import numpy as np
 import base64
 import os
+import io
 from matplotlib.gridspec import GridSpec
 import matplotlib.animation as animation
 import tempfile
@@ -16,6 +17,8 @@ from typing import List, Tuple
 from contextlib import contextmanager
 from pathlib import Path
 from fastapi.middleware.cors import CORSMiddleware
+from matplotlib.animation import PillowWriter
+
 
 app = FastAPI(title="WRF Animation Viewer")
 
@@ -60,10 +63,10 @@ class WRFDataProcessor:
     def __init__(self, shapefile_path: str = "/home/yurim2/WRF/pohang_shp/pohang.shp"):
         self.shapefile_path = shapefile_path
         self.gdf = gpd.read_file(shapefile_path)
+        self.bounds = self.gdf.total_bounds
         plt.switch_backend('Agg')
-        
         self.temp_cmap = 'coolwarm'
-        
+
     def get_db_data(self, timestamp: datetime) -> Tuple[xr.Dataset, str]:
         """DB에서 데이터를 가져와 xarray Dataset으로 변환"""
         conn = get_db_connection()
@@ -76,7 +79,6 @@ class WRFDataProcessor:
                     "SELECT nc_data FROM WRF_2024_01_NC WHERE timestamp = %s",
                     (timestamp,)
                 )
-       
                 result = cursor.fetchone()
                 
                 if result is None:
@@ -90,81 +92,77 @@ class WRFDataProcessor:
                     return xr.open_dataset(tmp_file.name), tmp_file.name
         finally:
             conn.close()
-            conn.close()
-            
-    def process_timestamp_data(self, ds: xr.Dataset) -> dict:
-        """단일 시점의 데이터 처리"""
-        try:
-            xlat = ds['XLAT'].isel(Time=0)
-            xlong = ds['XLONG'].isel(Time=0)
-            t2 = ds['T2'].isel(Time=0) - 273.15  # Kelvin to Celsius
-            
-            # Wind vector processing
-            u = ds['U'].mean(dim='bottom_top').isel(Time=0)
-            v = ds['V'].mean(dim='bottom_top').isel(Time=0)
-            
-            # Adjust staggered grid for wind vectors
-            u_adj = 0.5 * (u[:, :-1] + u[:, 1:])
-            v_adj = 0.5 * (v[:-1, :] + v[1:, :])
-            
-            return {
-                'xlat': xlat,
-                'xlong': xlong,
-                't2': t2,
-                'u': u_adj,
-                'v': v_adj
-            }
-        except Exception as e:
-            print(f"Data processing error: {e}")
-            raise HTTPException(status_code=500, detail=f"Data processing failed: {str(e)}")
 
-    def create_animation(self, timestamps: List[datetime], save_path: str = "/home/yurim2/WRF/SQL/animations") -> str:
-        """Generates animation with multiple timestamps"""
-        try:
-            fig, ax = plt.subplots(figsize=(14, 12))
-            print(f"총 {len(timestamps)}개의 파일을 처리합니다.")
-            processed_data = []
-            
-            with temporary_files() as temp_files:
-                for ts in timestamps:
-                    ds, temp_file = self.get_db_data(ts)
-                    temp_files.append(temp_file)
-                    processed_data.append(self.process_timestamp_data(ds))
-                print("애니메이션 생성 시작")
+    def process_data(self, ds: xr.Dataset):
+        """데이터셋에서 필요한 변수들을 추출하고 처리"""
+        xlat = ds['XLAT'].isel(Time=0)
+        xlong = ds['XLONG'].isel(Time=0)
+        t2 = ds['T2'].isel(Time=0) - 273.15  # 섭씨 변환
+        u = ds['U'].mean(dim='bottom_top').isel(Time=0)
+        v = ds['V'].mean(dim='bottom_top').isel(Time=0)
+        
+        return xlat, xlong, t2, u, v
+
+    def plot_frame(self, ax, xlat, xlong, t2, u, v, zoom_box=None):
+        """단일 프레임 플롯"""
+        # 기본 범위 설정
+        if zoom_box is None:
+            ax.set_xlim(self.bounds[0], self.bounds[2])
+            ax.set_ylim(self.bounds[1], self.bounds[3])
+        else:
+            ax.set_xlim(zoom_box[0], zoom_box[2])
+            ax.set_ylim(zoom_box[1], zoom_box[3])
+        
+        # 온도 컨투어
+        levels = np.arange(-5.0, 10.0, 0.5)
+        contour = ax.contourf(xlong, xlat, t2, cmap='coolwarm', levels=levels)
+        
+        # 바람 벡터
+        stride = 3 if zoom_box is None else 1
+        quiver = ax.quiver(xlong[::stride, ::stride], 
+                          xlat[::stride, ::stride],
+                          u[::stride, ::stride], 
+                          v[::stride, ::stride],
+                          scale=200, color='green')
+        
+        # 지형도 플롯
+        self.gdf.plot(ax=ax, edgecolor='black', facecolor='none', linewidth=0.5)
+        
+        # 격자선 추가
+        ax.grid(True, linestyle='--', alpha=0.5)
+        
+        return contour, quiver
+
+    def create_animation(self, timestamps: List[datetime]) -> str:
+            """Generates animation as a temporary GIF file and returns its path."""
+            try:
+                fig, ax = plt.subplots(figsize=(70, 70))
+                processed_data = []
                 
-                # Set up the first frame's colorbar
-                data = processed_data[0]
-                contour = ax.contourf(
-                    data['xlong'], data['xlat'], data['t2'],
-                    cmap=self.temp_cmap, levels=np.arange(-5.0, 10.0, 0.5)
-                )
-                cbar = plt.colorbar(contour, ax=ax, label="Temperature (°C)")
+                with temporary_files() as temp_files:
+                    for ts in timestamps:
+                        ds, temp_file = self.get_db_data(ts)
+                        temp_files.append(temp_file)
+                        processed_data.append(self.process_data(ds))
 
-                def update(frame):
-                    ax.clear()
-                    data = processed_data[frame]
-                    contour = ax.contourf(data['xlong'], data['xlat'], data['t2'], cmap=self.temp_cmap, levels=np.arange(-5.0, 10.0, 0.5))
-                    ax.quiver(data['xlong'], data['xlat'], data['u'], data['v'], scale=300, color='green')
-                    self.gdf.plot(ax=ax, edgecolor='black', facecolor='none')
-                    ax.set_xlim(128.88, 129.6)
-                    ax.set_ylim(35.82, 36.35)
-                    ax.set_title(timestamps[frame].strftime('%Y-%m-%d %H:%M'))
-                    return contour,
+                    def update(frame):
+                        ax.clear()
+                        xlat, xlong, t2, u, v = processed_data[frame]
+                        contour, quiver = self.plot_frame(ax, xlat, xlong, t2, u, v)
+                        ax.set_title(timestamps[frame].strftime('%Y-%m-%d %H:%M'))
+                        return contour, quiver
 
-                ani = animation.FuncAnimation(fig, update, frames=len(processed_data), interval=2000, blit = False)
-                try:
-                    save_file_path = os.path.join(save_path, f"wrf_animation_{timestamps[0].strftime('%Y%m%d_%H%M')}_{timestamps[-1].strftime('%Y%m%d_%H%M')}.gif")
-                    print(f"애니메이션을 {save_file_path}에 저장 중...")
-                    ani.save(save_file_path, writer="pillow", fps=2)
-                    print(f"애니메이션 저장 완료: {save_file_path}")
-                    return save_file_path
-                except Exception as e:
-                    print(f"애니메이션 저장 중 오류 발생: {str(e)}")  # 오류를 출력
-                    raise HTTPException(status_code=500, detail=f"Animation creation failed: {str(e)}")
+                    # 임시 파일에 애니메이션 저장
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=".gif") as tmp_file:
+                        ani = animation.FuncAnimation(fig, update, frames=len(processed_data), interval=1000, blit=False)
+                        ani.save(tmp_file.name, writer="pillow", fps=2)
+                        plt.close(fig)
 
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Animation creation failed: {str(e)}")
+                        # GIF 파일 경로 반환
+                        return tmp_file.name
 
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Animation creation failed: {str(e)}")
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
@@ -190,12 +188,22 @@ async def generate_animation(
     ]
 
     try:
-        image_base64_data = processor.create_animation(timestamps)
+        # 임시 파일에 애니메이션 생성
+        animation_path = processor.create_animation(timestamps)
+        
+        # 파일을 읽어 Base64로 인코딩
+        with open(animation_path, "rb") as f:
+            image_base64_data = base64.b64encode(f.read()).decode("utf-8")
+        
+        # 임시 파일 삭제
+        os.remove(animation_path)
+
+        # HTML 템플릿에 인코딩된 애니메이션 전달
         return templates.TemplateResponse(
             "animation.html", 
             {
                 "request": request,
-                "image_base64_data": image_base64_data
+                "image_base64": image_base64_data
             }
         )
     except Exception as e:

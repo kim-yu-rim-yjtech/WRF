@@ -1,11 +1,143 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>WRF Animation</title>
+    <title>WRF Animation Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .animation-container {
+            margin-top: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+        input[type="date"] {
+            padding: 5px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 5px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .zoom-controls {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        #animation-image {
+            max-width: 100%;
+            height: auto;
+        }
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        label {
+            font-size: 16px;
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h1>WRF Animation Result</h1>
-    <img src="data:image/gif;base64,{{ image_base64_data }}" alt="Animation Image">
+    <div class="container">
+        <h1>WRF Animation Viewer</h1>
+        <div class="form-container">
+            <form id="animationForm">
+                <label for="start_time">Start Date:</label>
+                <input type="date" id="start_time" name="start_time" required>
+                
+                <label for="end_time">End Date:</label>
+                <input type="date" id="end_time" name="end_time" required>
+                
+                <button type="submit">Generate Animation</button>
+            </form>
+        </div>
+        
+        <div class="animation-container">
+            {% if image_base64 %}
+                <img id="animation-image" src="data:image/gif;base64,{{ image_base64 }}" alt="WRF Animation">
+                <div class="controls">
+                    <button id="reset-view">Reset View</button>
+                    <button id="zoom-in">Zoom In</button>
+                    <button id="zoom-out">Zoom Out</button>
+                </div>
+            {% else %}
+                <p>Select a date range and click "Generate Animation" to view the results.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('animationForm').onsubmit = function(e) {
+            e.preventDefault();
+            const startDate = document.getElementById('start_time').value;
+            const endDate = document.getElementById('end_time').value;
+            
+            // 각 날짜에 00:00:00 시간을 추가
+            window.location.href = `/wrf-result-animation?start_time=${startDate}T00:00:00&end_time=${endDate}T00:00:00`;
+        };
+
+        // Set default dates to current date
+        window.onload = function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('start_time').value = today;
+            document.getElementById('end_time').value = today;
+        };
+
+        // 이미지가 로드된 경우에만 확대/축소 기능 활성화
+        if (document.getElementById('animation-image')) {
+            let scale = 1;
+            const image = document.getElementById('animation-image');
+
+            document.getElementById('zoom-in').onclick = function() {
+                scale *= 1.2;
+                image.style.transform = `scale(${scale})`;
+            };
+
+            document.getElementById('zoom-out').onclick = function() {
+                scale *= 0.8;
+                image.style.transform = `scale(${scale})`;
+            };
+
+            document.getElementById('reset-view').onclick = function() {
+                scale = 1;
+                image.style.transform = `scale(${scale})`;
+            };
+
+            // 마우스 휠 이벤트로 확대/축소
+            image.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                if (e.deltaY < 0) {
+                    scale *= 1.1;
+                } else {
+                    scale *= 0.9;
+                }
+                image.style.transform = `scale(${scale})`;
+            });
+        }
+    </script>
 </body>
 </html>

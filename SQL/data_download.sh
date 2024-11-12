@@ -1,5 +1,5 @@
 #!/bin/bash
-exec 2>error_log.txt  # 모든 오류 출력을 error_log.txt에 저장
+exec 2>error_log_data_download.txt 
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y gcc gfortran g++ libtool automake autoconf make m4 grads default-jre csh
@@ -146,7 +146,10 @@ pip show nest_asyncio &> /dev/null || pip install nest_asyncio
 pip show asyncio &> /dev/null || pip install asyncio
 pip show flask &? /dev/null || pip install flask
 python3 $HOME/WRF/download_geog_data.py
-mv $HOME/WRF/static/geog_high_res_mandatory.tar.gz $HOME/WRF/WPS_GEOG
+mv $HOME/WRF/static/geog_data/geog_high_res_mandatory.tar.gz $HOME/WRF/WPS_GEOG
 
 
 # grib2 데이터 다운로드
+mkdir grib2_data
+python $HOME/WRF/donload_ncar_data.py
+mv $HOME/WRF/static/grib2_data $HOME/WRF/grib2_data
